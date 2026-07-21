@@ -1,0 +1,171 @@
+/* ============================================
+   FairMark — Enterprise Upload Box
+   ============================================ */
+
+.upload-box {
+  width: 100%;
+}
+
+/* ---- Hidden input ---- */
+.file-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Dropzone ---- */
+.upload-dropzone {
+  position: relative;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--duration-base) var(--ease),
+              background var(--duration-base) var(--ease);
+  background: var(--bg-secondary);
+}
+
+.upload-dropzone:hover {
+  border-color: var(--primary-light);
+  background: var(--primary-soft);
+}
+
+.upload-dropzone.dragging {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+/* ---- Label ---- */
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+}
+
+.upload-icon-wrap {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-tertiary);
+  box-shadow: var(--shadow-xs);
+  transition: color var(--duration-base) var(--ease);
+}
+
+.upload-dropzone:hover .upload-icon-wrap {
+  color: var(--primary);
+}
+
+.upload-title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.upload-title span {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.upload-hint {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+/* ---- Requirements block ---- */
+.upload-reqs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.5rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+
+.upload-reqs-heading {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 0.2rem;
+}
+
+/* ---- Post-upload: file preview ---- */
+.file-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.preview-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.preview-img {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+}
+
+.preview-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2.5rem 1rem;
+  color: var(--text-tertiary);
+}
+
+.preview-placeholder span {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* File info row */
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.file-info-icon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.file-info-name {
+  flex: 1;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.file-info-size {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}

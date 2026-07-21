@@ -1,0 +1,10 @@
+sentence-transformers
+spacy
+pyspellchecker
+nltk
+pandas
+torch
+numpy
+flask
+pyinstaller
+google-genai

@@ -1,0 +1,38 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+sqlalchemy==2.0.23
+python-dotenv==1.0.0
+python-multipart==0.0.6
+pydantic==2.5.0
+requests>=2.28.0
+slowapi>=0.1.9
+alembic>=1.13.0
+# NLP Grading dependencies
+sentence-transformers>=2.2.0
+torch>=2.0.0
+numpy>=1.24.0
+nltk>=3.8.0
+spacy>=3.7.0
+pyspellchecker>=0.8.0
+# Optional LLM primary grader (Gemini). Falls back to the local heuristic
+# engine when google-genai is absent or GEMINI_API_KEY is unset.
+google-genai>=1.0.0
+# OCR local fallback (requires Tesseract binary: https://github.com/UB-Mannheim/tesseract/wiki)
+pytesseract>=0.3.10
+pillow>=10.0.0
+
+# PDF Processing
+PyMuPDF>=1.23.0
+
+# Testing
+pytest>=7.4.0
+httpx<0.28
+# httpx 0.28 dropped the `app=` shortcut that starlette 0.27's TestClient relies on.
+httpx>=0.24,<0.28
+
+# Document parsing
+python-docx>=1.1.0
+
+# PostgreSQL driver — required: DATABASE_URL uses postgresql:// (see SETUP.md).
+# Also used by create_db.py to create the database on first setup.
+psycopg2-binary>=2.9.9

@@ -1,0 +1,463 @@
+/* ============================================
+   FairMark — Answer Key Manager
+   ============================================ */
+
+.ak-page {
+  animation: fadeIn 0.35s var(--ease);
+}
+
+.ak-header {
+  margin-bottom: 1.75rem;
+}
+
+.ak-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.375rem;
+}
+
+.ak-title-icon {
+  color: var(--primary);
+}
+
+.ak-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.ak-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ── Layout ── */
+.ak-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── Shared card ── */
+.ak-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.ak-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ak-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1rem;
+}
+
+.ak-collapsible {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.ak-collapsible:hover {
+  color: var(--primary);
+}
+
+/* ── Form fields ── */
+.ak-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.ak-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ak-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.ak-hint {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  margin-bottom: 0.25rem;
+}
+
+.ak-hint code {
+  font-family: 'Consolas', 'Fira Code', monospace;
+  background: var(--bg-secondary);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+}
+
+.ak-select-wrap {
+  position: relative;
+}
+
+.ak-select {
+  width: 100%;
+  padding: 0.5625rem 2.25rem 0.5625rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  appearance: none;
+  transition: border-color var(--duration-fast) var(--ease);
+}
+
+.ak-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-focus);
+}
+
+.ak-select-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.ak-textarea {
+  width: 100%;
+  padding: 0.5625rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  resize: vertical;
+  line-height: 1.55;
+  transition: border-color var(--duration-fast) var(--ease);
+}
+
+.ak-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-focus);
+}
+
+.ak-textarea-tall {
+  min-height: 140px;
+}
+
+.ak-msg {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+}
+
+.ak-error {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-border);
+}
+
+.ak-success {
+  color: var(--success);
+  background: var(--success-soft);
+  border: 1px solid var(--success-border);
+}
+
+.ak-submit {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ── Browser panel ── */
+.ak-browser {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+
+.ak-browser-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ak-filter-select {
+  width: 200px;
+}
+
+.ak-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 3rem 1.5rem;
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.ak-empty-icon {
+  color: var(--border);
+  margin-bottom: 0.5rem;
+}
+
+.ak-empty-hint {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+}
+
+/* ── Groups ── */
+.ak-groups {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ak-group {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.ak-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.875rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.ak-group-name {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ak-group-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-full);
+  padding: 0 0.5rem;
+  line-height: 1.6;
+}
+
+/* ── Entry rows ── */
+.ak-entries {
+  display: flex;
+  flex-direction: column;
+}
+
+.ak-entry {
+  border-bottom: 1px solid var(--border);
+  transition: background var(--duration-fast) var(--ease);
+}
+
+.ak-entry:last-child {
+  border-bottom: none;
+}
+
+.ak-entry-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ak-entry-top:hover {
+  background: var(--bg-secondary);
+}
+
+.ak-entry-q {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.ak-entry-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.ak-chevron {
+  color: var(--text-tertiary);
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.ak-chevron.open {
+  transform: rotate(180deg);
+}
+
+.ak-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease);
+}
+
+.ak-delete-btn:hover {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-color: var(--danger-border);
+}
+
+.ak-delete-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ak-entry-answer {
+  padding: 0.75rem 0.875rem 0.875rem;
+  background: var(--success-soft);
+  border-top: 1px solid var(--success-border);
+}
+
+.ak-answer-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--success);
+  margin-bottom: 0.375rem;
+}
+
+.ak-answer-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Inline answer editing ── */
+.ak-edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease);
+}
+
+.ak-edit-btn:hover {
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-color: var(--primary-border);
+}
+
+.ak-edit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ak-needs-answer {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--warning);
+  background: var(--warning-soft);
+  border: 1px solid var(--warning-border);
+  padding: 0.125rem 0.4rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.ak-answer-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ak-answer-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.ak-answer-empty {
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.ak-inline-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: inherit;
+  font-style: normal;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .ak-layout {
+    grid-template-columns: 1fr;
+  }
+}
