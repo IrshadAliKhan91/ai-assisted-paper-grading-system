@@ -115,7 +115,6 @@ Some NLP-dependent tests are skipped when their model assets are unavailable. Se
 - [Architecture notes](docs/architecture.md) — components, data flow, and design choices
 - [API overview](docs/api.md) — authenticated endpoints and main workflows
 - [Requirements](docs/requirements.md) — project requirements
-- [Technical report](REPORT.md) — detailed implementation and evaluation notes
 - [Answer-key template](docs/templates/answer_sheet_template.docx) — Word template for uploads
 
 ## Security and privacy
