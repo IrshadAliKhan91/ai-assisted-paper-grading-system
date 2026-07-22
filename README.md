@@ -4,8 +4,6 @@
 
 FairMark turns a photographed or scanned answer sheet into a structured, reviewable result. It extracts answers with an OCR provider cascade, matches them against an answer key, grades them with an LLM and a local semantic fallback, and presents scores and feedback in a React dashboard.
 
-![FairMark architecture](docs/architecture/three_tier_architecture.png)
-
 ## Why FairMark?
 
 Manual grading is repetitive and can vary from paper to paper. FairMark helps teachers spend less time on routine marking while retaining the final decision: low-confidence OCR results and missing answer keys are flagged for manual review instead of silently guessed.
