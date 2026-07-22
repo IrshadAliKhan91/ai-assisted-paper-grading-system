@@ -1,0 +1,16 @@
+.ak-page { max-width: 900px; margin: 0 auto; padding: 1rem 0; }
+.ak-header { margin-bottom: 1.5rem; }
+.ak-title-row { display: flex; align-items: center; gap: 0.6rem; }
+.ak-title { margin: 0; color: var(--text-primary); }
+.ak-title-icon { color: var(--primary); }
+.ak-subtitle, .ak-answer-text { color: var(--text-secondary); }
+.ak-browser, .ak-group { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.ak-browser { padding: 1rem; }
+.ak-group { overflow: hidden; margin-bottom: 1rem; }
+.ak-group:last-child { margin-bottom: 0; }
+.ak-group-header { display: flex; justify-content: space-between; padding: 0.8rem 1rem; background: var(--bg-secondary); font-weight: 700; color: var(--text-primary); }
+.ak-group-count { color: var(--text-tertiary); }
+.ak-entry { padding: 0.9rem 1rem; border-top: 1px solid var(--border); }
+.ak-entry-q { margin: 0 0 0.4rem; font-weight: 600; color: var(--text-primary); }
+.ak-answer-text { margin: 0; white-space: pre-wrap; }
+.ak-empty { padding: 2rem; text-align: center; color: var(--text-tertiary); }

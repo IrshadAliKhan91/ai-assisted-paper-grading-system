@@ -30,8 +30,6 @@ httpx<0.28
 # httpx 0.28 dropped the `app=` shortcut that starlette 0.27's TestClient relies on.
 httpx>=0.24,<0.28
 
-# Document parsing
-python-docx>=1.1.0
 
 # PostgreSQL driver — required: DATABASE_URL uses postgresql:// (see SETUP.md).
 # Also used by create_db.py to create the database on first setup.

@@ -15,7 +15,7 @@ The interactive FastAPI documentation is available at `http://127.0.0.1:8000/doc
 | GET | `/search` | Search student records. |
 | GET | `/stats` | Retrieve aggregate grading statistics. |
 | GET | `/subjects` | List subjects with answer-key data. |
-| POST | `/upload-answer-key` | Upload answer-key content or a template. |
+| POST | `/upload-answer-key` | Save teacher-entered answer-key content. |
 | POST | `/assessments/approve-answer` | Approve a reviewed answer. |
 | POST | `/answers/correct-ocr` | Correct extracted OCR text. |
 | GET/PATCH/DELETE | `/question-bank` | Read and manage reusable model-answer entries. |

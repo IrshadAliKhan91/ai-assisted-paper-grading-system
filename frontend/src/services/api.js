@@ -146,16 +146,11 @@ export const api = {
     }
   },
 
-  uploadAnswerKey: async (subject, questions, file = null) => {
+  uploadAnswerKey: async (subject, questions) => {
     try {
       const formData = new FormData();
-      if (file) {
-        formData.append('file', file);
-        if (subject) formData.append('subject', subject);
-      } else {
-        formData.append('subject', subject);
-        formData.append('questions', JSON.stringify(questions));
-      }
+      formData.append('subject', subject);
+      formData.append('questions', JSON.stringify(questions));
       const response = await fetchWithAuth(`${API_URL}/upload-answer-key`, {
         method: 'POST',
         body: formData,

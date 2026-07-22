@@ -279,19 +279,12 @@ async def upload_answer_key(
     request: Request,
     subject: str = Form(None),
     questions: str = Form(None),
-    file: UploadFile = File(None),
     db: Session = Depends(database.get_db)
 ):
-    """Upload a custom answer key either via JSON questions or a .docx template."""
+    """Save a teacher-entered answer key."""
     qa_list = []
-    
-    if file and (file.filename or '').endswith('.docx'):
-        from ..template_parser import parse_template
-        file_bytes = await file.read()
-        parsed_data = parse_template(file_bytes)
-        subject = subject or parsed_data.get('subject') or 'Untitled Key'
-        qa_list = parsed_data.get('questions', [])
-    elif questions and subject:
+
+    if questions and subject:
         try:
             qa_list = json.loads(questions)
         except Exception:
@@ -299,7 +292,7 @@ async def upload_answer_key(
         if not isinstance(qa_list, list):
             raise HTTPException(status_code=400, detail="Questions must be a JSON array")
     else:
-        raise HTTPException(status_code=400, detail="Must provide either a .docx file or subject + questions JSON")
+        raise HTTPException(status_code=400, detail="Provide a key title and questions JSON")
 
     # Find or create Assessment for this subject
     assessment = db.query(models.Assessment).filter(models.Assessment.subject.ilike(subject)).first()
