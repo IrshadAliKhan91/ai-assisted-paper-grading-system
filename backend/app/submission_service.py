@@ -66,7 +66,8 @@ def process_grading_submission(
             f"Consider supplying the student ID manually."
         )
 
-    final_subject = ocr_subject if ocr_subject else (fallback_subject or "General")
+    # The teacher-selected key title always wins over any OCR guess.
+    final_subject = fallback_subject or ocr_subject or "Untitled Key"
 
     # H7: Use flush (not commit) so the whole submission is one atomic unit.
     # A failure during grading rolls everything back — no orphan student/

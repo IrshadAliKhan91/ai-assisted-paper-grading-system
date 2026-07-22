@@ -1,16 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Footer.css';
 
 // M1: Uses React Router — no onNavigate prop needed
 function Footer() {
-  const navigate = useNavigate();
-
-  const handleNav = (path) => (e) => {
-    e.preventDefault();
-    navigate(path);
-  };
-
   return (
     <footer className="footer">
       <div className="footer-inner">
@@ -24,19 +16,6 @@ function Footer() {
           </p>
         </div>
 
-        <div className="footer-links">
-          <div className="footer-col">
-            <h4>Product</h4>
-            <a href="/" onClick={handleNav('/')}>AI Grading</a>
-            <a href="/dashboard" onClick={handleNav('/dashboard')}>Analytics</a>
-            <a href="/search" onClick={handleNav('/search')}>Search Records</a>
-          </div>
-          <div className="footer-col">
-            <h4>Resources</h4>
-            <a href="/answer-key" onClick={handleNav('/answer-key')}>Answer Key</a>
-            <a href="/about" onClick={handleNav('/about')}>About</a>
-          </div>
-        </div>
       </div>
 
       <div className="footer-bottom">

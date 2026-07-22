@@ -151,6 +151,7 @@ export const api = {
       const formData = new FormData();
       if (file) {
         formData.append('file', file);
+        if (subject) formData.append('subject', subject);
       } else {
         formData.append('subject', subject);
         formData.append('questions', JSON.stringify(questions));
@@ -230,10 +231,11 @@ export const api = {
    * @param {File} file - The image file to upload
    * @returns {Promise} - Grading results
    */
-  gradePaper: async (file) => {
+  gradePaper: async (file, subject = '') => {
     try {
       const formData = new FormData();
       formData.append('file', file);
+      if (subject) formData.append('subject', subject);
 
       const response = await fetchWithAuth(`${API_URL}/grade`, {
         method: 'POST',

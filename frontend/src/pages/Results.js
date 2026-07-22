@@ -140,9 +140,6 @@ function Results({ result: initialResult }) {
         </div>
       </div>
 
-      <button onClick={() => navigate('/')} className="btn-grade-another">
-        Grade Another Paper
-      </button>
     </div>
   );
 }

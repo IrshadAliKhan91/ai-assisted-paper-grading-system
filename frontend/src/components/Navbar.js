@@ -11,7 +11,7 @@ function Navbar() {
   const navItems = [
     { path: '/',           label: 'Home',       icon: <Home size={16} /> },
     { path: '/search',     label: 'Search',     icon: <Search size={16} /> },
-    { path: '/answer-key', label: 'Answer Key', icon: <BookKey size={16} /> },
+    { path: '/keys',       label: 'Answer Keys', icon: <BookKey size={16} /> },
     { path: '/dashboard',  label: 'Dashboard',  icon: <BarChart3 size={16} /> },
     { path: '/about',      label: 'About',      icon: <Info size={16} /> },
   ];

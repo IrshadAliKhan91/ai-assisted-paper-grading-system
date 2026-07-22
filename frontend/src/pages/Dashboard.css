@@ -84,8 +84,12 @@
   color: white;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   transition: transform var(--duration-fast) var(--ease);
 }
+.stats-card:nth-child(2) { background: linear-gradient(135deg, #059669, #047857); }
+.stats-card:nth-child(3) { background: linear-gradient(135deg, #d97706, #b45309); }
+.stats-card:nth-child(4) { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
 
 .stats-card:hover {
   transform: translateY(-2px);

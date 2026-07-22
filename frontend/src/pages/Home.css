@@ -64,10 +64,8 @@
 
 /* ---- Grid ---- */
 .home-grid {
-  display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 2rem;
-  align-items: start;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 /* ---- Upload card ---- */
@@ -215,6 +213,24 @@
   flex: 1;
   padding: 0.625rem 1rem;
   font-size: 0.875rem;
+}
+
+.remove-upload {
+  width: fit-content;
+  padding: 0.45rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.upload-card > .btn-secondary,
+.field > .btn-secondary {
+  width: fit-content;
+  padding: 0.45rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .warmup-hint {

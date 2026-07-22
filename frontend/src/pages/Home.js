@@ -1,195 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Loader, Zap } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Loader, X } from 'lucide-react';
 import './Home.css';
 import UploadBox from '../components/UploadBox';
 import { api } from '../services/api';
 
 function Home({ onResultReady }) {
-  const navigate = useNavigate();
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const isSupportedUploadFile = (file) => {
-    const name = file?.name?.toLowerCase() || '';
-    const type = file?.type || '';
-    return (
-      type.startsWith('image/')
-      || type === 'application/pdf'
-      || /\.(jpe?g|png|webp|pdf)$/i.test(name)
-    );
-  };
-
-  const isPdfFile = (file) => {
-    const name = file?.name?.toLowerCase() || '';
-    return file?.type === 'application/pdf' || name.endsWith('.pdf');
-  };
-
-  // M7: Clean up object URLs on change
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-    };
-  }, [previewUrl]);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        setError('File size must be less than 10MB');
-        return;
-      }
-      if (!isSupportedUploadFile(file)) {
-        setError('Please upload a JPG, PNG, WebP, or PDF file.');
-        return;
-      }
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      setSelectedFile(file);
-      
-      if (isPdfFile(file)) {
-        setPreviewUrl(null);
-      } else {
-        setPreviewUrl(URL.createObjectURL(file));
-      }
-      setError('');
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        setError('File size must be less than 10MB');
-        return;
-      }
-      if (isSupportedUploadFile(file)) {
-        if (previewUrl) URL.revokeObjectURL(previewUrl);
-        setSelectedFile(file);
-        
-        if (isPdfFile(file)) {
-            setPreviewUrl(null); // Or set a placeholder image
-        } else {
-            setPreviewUrl(URL.createObjectURL(file));
-        }
-        setError('');
-      } else {
-        setError('Please upload a JPG, PNG, WebP, or PDF file.');
-      }
-    }
-  };
-
-  const uploadAndGrade = async () => {
-    if (!selectedFile) return;
-    setLoading(true);
-    setError('');
-    try {
-      const result = await api.gradePaper(selectedFile);
-      onResultReady(result);
-    } catch (err) {
-      setError(err.message || 'Failed to process paper. Please check backend connection.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resetUpload = () => {
-    setSelectedFile(null);
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setPreviewUrl(null);
-    setError('');
-  };
-
-  return (
-    <div className="home-page">
-
-      {/* ---- Hero ---- */}
-      <section className="hero">
-        <div className="hero-badge">
-          <Zap size={14} />
-          AI-Powered Assessment
-        </div>
-        <h1 className="hero-title">Grade papers in seconds,<br />not hours</h1>
-        <p className="hero-desc">
-          Upload an answer sheet and FairMark extracts each answer and grades it
-          against your subject's answer key. No key yet? It drafts a model answer
-          for you to review and approve before marks are awarded.
-        </p>
-      </section>
-
-      {/* ---- Main content ---- */}
-      <div className="home-grid">
-        {/* Left — Upload */}
-        <div className="upload-card">
-          <div className="card-header">
-            <h2>Upload Answer Sheet</h2>
-          </div>
-
-          <UploadBox
-            selectedFile={selectedFile}
-            previewUrl={previewUrl}
-            onFileChange={handleFileChange}
-            onDrop={handleDrop}
-          />
-
-          {(previewUrl || selectedFile) && (
-            <div className="upload-actions">
-
-              {error && <div className="error-banner">{error}</div>}
-
-              {loading ? (
-                <div className="loading-state">
-                  <Loader className="spinner" size={20} />
-                  <div>
-                    <p className="loading-title">Processing…</p>
-                    <p className="loading-hint">Extracting text and grading answers</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="btn-row">
-                  <button onClick={uploadAndGrade} className="btn btn-primary">Grade Paper</button>
-                  <button onClick={resetUpload} className="btn btn-secondary">Cancel</button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Right — How it works + stats */}
-        <div className="sidebar">
-          <div className="how-card">
-            <h3>How it works</h3>
-            <ol className="steps">
-              <li>
-                <span className="step-num">1</span>
-                <div>
-                  <strong>Prepare</strong>
-                  <p>Use a clear photo, scan, or PDF of the answer sheet.</p>
-                </div>
-              </li>
-              <li>
-                <span className="step-num">2</span>
-                <div>
-                  <strong>Upload</strong>
-                  <p>Drag & drop or browse - JPG, PNG, WebP, or PDF.</p>
-                </div>
-              </li>
-              <li>
-                <span className="step-num">3</span>
-                <div>
-                  <strong>Get Results</strong>
-                  <p>Answers are graded against the answer key, with a report you can review.</p>
-                </div>
-              </li>
-            </ol>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  );
+  const [paper, setPaper] = useState(null), [preview, setPreview] = useState(null);
+  const [paperTitle, setPaperTitle] = useState(''), [keyTitle, setKeyTitle] = useState('');
+  const [keys, setKeys] = useState([]), [keyText, setKeyText] = useState(''), [keyFile, setKeyFile] = useState(null);
+  const [loading, setLoading] = useState(false), [error, setError] = useState('');
+  const keyInput = useRef(null);
+  const loadKeys = () => api.getQuestionBank().then((items) => setKeys([...new Set(items.map((x) => x.subject))]));
+  useEffect(loadKeys, []);
+  const selectPaper = (file) => { if (!file || !/\.(jpe?g|pdf)$/i.test(file.name)) return setError('Please upload a JPG or PDF paper.'); setPaper(file); setPreview(file.type.startsWith('image/') ? URL.createObjectURL(file) : null); setError(''); };
+  const parseKey = () => keyText.trim().split(/\n\s*\n/).filter(Boolean).map((block) => { const q = block.match(/^Q\s*:\s*(.+)/im), a = block.match(/^A\s*:\s*([\s\S]+)/im); if (!q || !a) throw new Error('Write each answer as Q: question and A: answer.'); return { question: q[1].trim(), answer: a[1].trim(), max_marks: 10 }; });
+  const grade = async () => { if (!paper || !keyTitle.trim()) return setError('Add a paper and choose or name an answer key.'); setLoading(true); setError(''); try { if (keyFile) await api.uploadAnswerKey(keyTitle, [], keyFile); else if (keyText.trim()) await api.uploadAnswerKey(keyTitle, parseKey()); onResultReady(await api.gradePaper(paper, keyTitle)); } catch (e) { setError(e.message || 'Could not grade this paper.'); } finally { setLoading(false); } };
+  const removeKey = () => { setKeyFile(null); if (keyInput.current) keyInput.current.value = ''; };
+  return <div className="home-page"><section className="hero"><div className="hero-badge">AI-Powered Assessment</div><p className="hero-desc">Upload an answer sheet and FairMark extracts each answer and grades it against your answer key</p></section><div className="home-grid"><div className="upload-card"><div className="card-header"><h2>Upload Answer Sheet</h2></div><div className="field"><label className="field-label">Paper Title</label><input className="field-input" value={paperTitle} onChange={(e) => setPaperTitle(e.target.value)} placeholder="e.g. Midterm Paper" /></div><UploadBox selectedFile={paper} previewUrl={preview} onFileChange={(e) => selectPaper(e.target.files[0])} onDrop={(e) => { e.preventDefault(); selectPaper(e.dataTransfer.files[0]); }} />{paper && <button className="btn btn-secondary remove-upload" onClick={() => { setPaper(null); setPreview(null); }}><X size={15} /> Remove paper</button>}<div className="upload-actions"><div className="field"><label className="field-label">Use a stored key</label><select className="field-select" value={keyTitle} onChange={(e) => setKeyTitle(e.target.value)}><option value="">Select a saved key</option>{keys.map((k) => <option key={k} value={k}>{k}</option>)}</select></div><div className="field"><label className="field-label">Add Answer Key</label><input className="field-input" value={keyTitle} onChange={(e) => setKeyTitle(e.target.value)} placeholder="Key Title" /><textarea className="field-input" rows="5" value={keyText} onChange={(e) => setKeyText(e.target.value)} placeholder={'Q: Question\nA: Correct answer'} /><p className="field-hint">Each question is graded out of 10. This key is saved for future papers.</p><label className="field-label">Or upload your key here for cross checking instead of writing it manually</label><input ref={keyInput} type="file" accept=".docx" onChange={(e) => setKeyFile(e.target.files[0])} />{keyFile && <button className="btn btn-secondary remove-upload" onClick={removeKey}><X size={15} /> Remove key</button>}</div>{error && <div className="error-banner">{error}</div>}{loading ? <div className="loading-state"><Loader className="spinner" size={20} /><p className="loading-title">Grading paper...</p></div> : <button className="btn btn-primary" onClick={grade}>Grade Paper</button>}</div></div></div></div>;
 }
-
 export default Home;

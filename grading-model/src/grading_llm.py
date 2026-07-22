@@ -99,3 +99,30 @@ class LLMGrader:
                     return None
 
         return None
+
+    def grade_without_key(self, question, student):
+        """Grade from subject knowledge when the teacher has not supplied a key."""
+        if not self.clients:
+            return None
+        prompt = f"""
+        You are a fair academic grader. Grade the student's response using your
+        own subject knowledge because no teacher answer key was supplied.
+        Question: {question}
+        Student Answer: {self._sanitize(student)}
+        Return ONLY JSON: {{"marks": integer from 0 to 10, "feedback": "brief reason",
+        "reference_answer": "a concise correct answer"}}.
+        """
+        for client in self.clients:
+            for model_name in ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.0-flash-lite']:
+                try:
+                    response = client.models.generate_content(
+                        model=model_name, contents=prompt,
+                        config=types.GenerateContentConfig(response_mime_type='application/json'),
+                    )
+                    return json.loads(response.text)
+                except Exception as e:
+                    if '404' in str(e) or 'not supported' in str(e).lower():
+                        continue
+                    if '429' in str(e) or 'RESOURCE_EXHAUSTED' in str(e):
+                        break
+        return None

@@ -359,6 +359,20 @@ def grade_answer(question_text: str, student_answer: str, max_marks: float = 10.
     approve_answer() then stores it in the question bank and regrades normally.
     """
     try:
+        llm = get_llm_grader()
+        if llm is not None:
+            llm_result = llm.grade_without_key(question_text, student_answer)
+            if llm_result and llm_result.get('marks') is not None:
+                raw_marks = max(0.0, min(10.0, float(llm_result['marks'])))
+                return {
+                    'question': question_text, 'student_answer': student_answer,
+                    'correct_answer': llm_result.get('reference_answer', ''),
+                    'marks': (raw_marks / 10.0) * max_marks, 'max_marks': max_marks,
+                    'similarity_score': raw_marks / 10.0,
+                    'ai_feedback': llm_result.get('feedback', ''),
+                    'grading_method': 'gemini_without_key',
+                    'fallback_reason': None,
+                }
         ai_reference = generate_reference_answer_with_ai(question_text)
 
         return {
@@ -408,22 +422,9 @@ def _grade_single(i: int, qa: Dict, ref_answers: Dict) -> tuple:
 
     if model_answer:
         result = grade_with_answer(question, answer, model_answer, max_marks=max_marks)
-    elif ref_answers.get(i):
-        result = {
-            'question': question,
-            'student_answer': answer,
-            'correct_answer': ref_answers[i],
-            'marks': 0,
-            'max_marks': max_marks,
-            'similarity_score': 0.0,
-            'ai_feedback': (
-                "Draft model answer generated for teacher review. "
-                "No marks awarded until it is approved."
-            ),
-            'grading_method': 'manual_review_suggested_answer',
-            'fallback_reason': 'AI-generated answer is a teacher-review suggestion only',
-            'suggested_answer': ref_answers[i],
-        }
+    elif answer.strip():
+        # No stored key: Gemini can grade from subject knowledge when configured.
+        result = grade_answer(question, answer, max_marks=max_marks)
     else:
         result = {
             'question': question,

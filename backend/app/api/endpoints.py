@@ -289,7 +289,7 @@ async def upload_answer_key(
         from ..template_parser import parse_template
         file_bytes = await file.read()
         parsed_data = parse_template(file_bytes)
-        subject = parsed_data.get('subject') or subject or 'General Subject'
+        subject = subject or parsed_data.get('subject') or 'Untitled Key'
         qa_list = parsed_data.get('questions', [])
     elif questions and subject:
         try:
@@ -323,7 +323,7 @@ async def upload_answer_key(
     for qa in qa_list:
         q_text = qa.get('question', '').strip()
         a_text = qa.get('answer', '').strip()
-        m_marks = float(qa.get('max_marks', 5.0))
+        m_marks = 10.0
 
         # H4: Validate length
         if not q_text:

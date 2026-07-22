@@ -10,9 +10,10 @@ import logging
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException, Depends
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
+from pathlib import Path
 
 load_dotenv()
 
@@ -32,6 +33,13 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Pre-load the NLP grading model synchronously at startup so it's instantly ready."""
+    # Loading sentence-transformer weights can take several minutes the first
+    # time. Keep the local web app responsive and load it only when grading is
+    # requested (set PRELOAD_NLP_MODEL=true to restore eager loading).
+    if os.getenv("PRELOAD_NLP_MODEL", "false").lower() != "true":
+        yield
+        return
+
     try:
         from .nlp_grading_service import get_grading_model, is_nlp_model_available
         if is_nlp_model_available():
@@ -94,5 +102,23 @@ app.include_router(endpoints.router, prefix=API_PREFIX, dependencies=[Depends(ve
 
 # H8 — root endpoint now behind auth too
 @app.get("/")
-def read_root(credentials: HTTPBasicCredentials = Depends(verify_credentials)):
+def read_root():
+    index_file = Path(__file__).resolve().parents[2] / "frontend" / "build" / "index.html"
+    if index_file.is_file():
+        return FileResponse(index_file)
     return {"message": "AI-Paper Checking System API is running"}
+
+# Serve static assets when they exist and otherwise return React's entry point.
+# This is essential for BrowserRouter: refreshing /dashboard or /keys must load
+# the app rather than producing a backend 404 response.
+_frontend_build = Path(__file__).resolve().parents[2] / "frontend" / "build"
+
+@app.get("/{frontend_path:path}", include_in_schema=False)
+def serve_frontend(frontend_path: str):
+    if not _frontend_build.is_dir():
+        return {"message": "AI-Paper Checking System API is running"}
+
+    requested_file = (_frontend_build / frontend_path).resolve()
+    if requested_file.is_file() and _frontend_build.resolve() in requested_file.parents:
+        return FileResponse(requested_file)
+    return FileResponse(_frontend_build / "index.html")
