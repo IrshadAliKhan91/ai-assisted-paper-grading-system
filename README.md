@@ -23,13 +23,12 @@ Manual grading is repetitive and can vary from paper to paper. FairMark helps te
 
 ```mermaid
 flowchart LR
-    A[Teacher uploads answer sheet] --> B[FastAPI backend]
-    B --> C[OCR cascade]
-    C --> D[Question matching]
-    D --> E[LLM grading]
-    E --> F[Semantic fallback and checks]
-    F --> G[(PostgreSQL)]
-    G --> H[React dashboard and PDF report]
+    A[Upload answer sheet] --> B[Backend API]
+    B --> C[OCR extraction]
+    C --> D[Answer-key matching]
+    D --> E[AI grading]
+    E --> F[Store result]
+    F --> G[Dashboard and PDF report]
 ```
 
 1. FairMark validates the uploaded file and extracts question-answer pairs.
