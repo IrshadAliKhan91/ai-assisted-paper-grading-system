@@ -30,7 +30,6 @@ Automation is assistive, not autonomous. FairMark flags low-confidence extractio
 
 ## Diagrams
 
-- [Three-tier architecture](architecture/three_tier_architecture.png)
 - [Detailed UML system architecture](architecture/system_architecture_uml.png)
 
 The source scripts for the diagrams are in [`scripts/`](../scripts/).
