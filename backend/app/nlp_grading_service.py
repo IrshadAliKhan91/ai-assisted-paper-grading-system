@@ -60,7 +60,7 @@ def get_llm_grader():
     Lazy-load the Gemini LLM grader — the spec-defined PRIMARY grading engine.
     Returns None (and never retries) if google-genai isn't installed or no
     GEMINI_API_KEY is configured, so the pipeline transparently falls back to
-    the local heuristic engine (same design as Grading Model/src/app.py).
+    the local heuristic grading engine.
     """
     global _llm_grader, _llm_unavailable
     if _llm_unavailable:

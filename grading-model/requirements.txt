@@ -5,6 +5,4 @@ nltk
 pandas
 torch
 numpy
-flask
-pyinstaller
 google-genai
