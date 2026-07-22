@@ -2,8 +2,6 @@
 
 FairMark uses a three-tier application design. The React client handles the teacher workflow, FastAPI coordinates extraction and grading, and PostgreSQL stores the durable academic record.
 
-![System architecture](architecture/system_architecture_uml.png)
-
 ## Components
 
 | Component | Responsibility |
@@ -27,9 +25,3 @@ The OCR layer is provider-agnostic. It tries configured services in a fallback s
 ## Teacher review
 
 Automation is assistive, not autonomous. FairMark flags low-confidence extraction and unmatched questions for review. Teachers can correct OCR output and approve answers from the application before relying on a result.
-
-## Diagrams
-
-- [Detailed UML system architecture](architecture/system_architecture_uml.png)
-
-The source scripts for the diagrams are in [`scripts/`](../scripts/).
