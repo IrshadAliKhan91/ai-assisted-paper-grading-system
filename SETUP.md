@@ -1,113 +1,81 @@
-# FairMark Setup Guide - AI Paper Checking System
+# FairMark setup guide
 
-This guide outlines the steps to set up the FairMark project on a new PC or laptop.
+This guide covers manual local setup. For the fastest Windows setup, use `run_fairmark.bat` after creating the environment files described below.
 
 ## Prerequisites
 
-Before starting, ensure you have the following installed:
+- Python 3.10 or newer
+- Node.js 18 or newer
+- PostgreSQL 14 or newer for the full application
+- An OCR provider API key, or a local Tesseract installation
 
-1.  **Python** (3.10 or higher recommended) - [Download Python](https://www.python.org/downloads/)
-2.  **Node.js** (LTS version recommended) - [Download Node.js](https://nodejs.org/)
-3.  **PostgreSQL** (Active and running) - [Download PostgreSQL](https://www.postgresql.org/download/)
-    *   *During installation, remember the password you set for the `postgres` user.*
-
----
-
-## Step 1: Clone or Copy the Project
-
-Copy the entire project folder to your new machine.
-Open a terminal (Command Prompt or PowerShell) and navigate to the project root directory:
+## 1. Clone and configure
 
 ```powershell
-cd path\to\FairMark-Ai-Based-Paper-Checking-System
+git clone https://github.com/IrshadAliKhan91/ai-assisted-paper-grading-system.git
+cd ai-assisted-paper-grading-system
+Copy-Item backend/.env.example backend/.env
+Copy-Item frontend/.env.example frontend/.env
 ```
 
----
+Edit both `.env` files before starting. At minimum, set a secure `ADMIN_PASSWORD` in `backend/.env` and use the same value for `REACT_APP_API_PASS` in `frontend/.env`. Configure `DATABASE_URL` for PostgreSQL and add at least one OCR provider credential for answer-sheet extraction.
 
-## Step 2: Database Setup
+## 2. Set up the backend
 
-1.  **Start PostgreSQL**: Ensure your PostgreSQL service is running.
-2.  **Create `.env` file**: 
-    Navigate to the `backend` folder and create a file named `.env`.
-    Add the following content (update with your actual PostgreSQL password context):
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+cd ..
+python backend/create_db.py
+```
 
-    ```env
-    # Format: postgresql://user:password@host/dbname
-    DATABASE_URL=postgresql://postgres:YOUR_PASSWORD_HERE@localhost/FairMark_db
-    ```
-    *Replace `YOUR_PASSWORD_HERE` with your actual Postgres password.*
+`create_db.py` creates the configured database when required, applies Alembic migrations, and adds starter data.
 
-3.  **Run the Database Setup Script**:
-    With PostgreSQL running, run the setup script. It will (1) create the
-    `FairMark_db` database if it doesn't exist, (2) apply the schema via Alembic
-    migrations, and (3) seed reference data:
+Start the API from the `backend` directory:
 
-    ```powershell
-    python backend/create_db.py
-    ```
-    *If successful, you will see "Database ... created" (or "already exists"),
-    "Migrations applied successfully", and "Database setup complete".*
+```powershell
+cd backend
+.\.venv\Scripts\Activate.ps1
+uvicorn app.main:app --reload
+```
 
-    > **Note:** The PostgreSQL driver (`psycopg2-binary`) is installed by
-    > `pip install -r requirements.txt` in Step 3. If you run `create_db.py`
-    > before installing requirements, either install it first or create the
-    > database manually with `createdb FairMark_db`.
+The API is available at `http://127.0.0.1:8000/api` and interactive documentation is available at `http://127.0.0.1:8000/docs`.
 
----
+## 3. Set up the frontend
 
-## Step 3: Backend Setup (FastAPI)
+Open a second terminal at the repository root:
 
-1.  **Navigate to backend directory**:
-    ```powershell
-    cd backend
-    ```
+```powershell
+cd frontend
+npm ci
+npm start
+```
 
-2.  **Create a Virtual Environment** (Recommended):
-    ```powershell
-    python -m venv venv
-    ```
+Open `http://localhost:3000`. The React application expects the API to be available at the URL set by `REACT_APP_API_URL`.
 
-3.  **Activate Virtual Environment**:
-    *   Windows: `.\venv\Scripts\activate`
-    *   Mac/Linux: `source venv/bin/activate`
+## 4. Optional local grading-engine interface
 
-4.  **Install Dependencies**:
-    ```powershell
-    pip install -r requirements.txt
-    ```
+The core local semantic grader can also be exercised independently:
 
-5.  **Run the Backend Server**:
-    start the server using `uvicorn`. It will run on `http://localhost:8000`.
-    ```powershell
-    uvicorn app.main:app --reload
-    ```
-    *Keep this terminal window open.*
+```powershell
+cd grading-model
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+python src/app.py
+```
 
----
-
-## Step 4: Frontend Setup (React)
-
-1.  **Open a new terminal window** and navigate to the frontend app directory:
-    ```powershell
-    cd frontend\my-app
-    ```
-
-2.  **Install Node Modules**:
-    ```powershell
-    npm install
-    ```
-    *This might take a few minutes.*
-
-3.  **Start the Frontend Development Server**:
-    ```powershell
-    npm start
-    ```
-    *This will open the application in your browser, typically at `http://localhost:3000`.*
-
----
+This standalone interface is for development and testing. The main FairMark application imports the grading engine directly rather than calling this interface over HTTP.
 
 ## Troubleshooting
 
--   **Database Connection Error**: Double-check your `.env` file password and ensure PostgreSQL service is running.
--   **Module Not Found**: Ensure you have activated the virtual environment and installed requirements.
--   **Port Confilcts**: If port 8000 or 3000 is busy, kill the process using that port or verify no other instances are running.
+- **Database connection error:** confirm PostgreSQL is running and `DATABASE_URL` in `backend/.env` is correct.
+- **Authentication error:** ensure `ADMIN_USER` and `ADMIN_PASSWORD` match the frontend `REACT_APP_API_USER` and `REACT_APP_API_PASS` values.
+- **OCR unavailable:** provide at least one valid provider key, or install and configure Tesseract locally.
+- **Port conflict:** free port `8000` for the API or `3000` for the frontend, then restart the affected service.
+
+Never commit `.env` files, API keys, answer sheets, or exported grading records.

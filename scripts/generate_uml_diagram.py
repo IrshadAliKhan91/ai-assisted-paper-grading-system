@@ -16,6 +16,7 @@ from matplotlib.patches import FancyBboxPatch, FancyArrowPatch, Rectangle
 from matplotlib.lines import Line2D
 import matplotlib.patheffects as pe
 import numpy as np
+from pathlib import Path
 
 # ── Global settings ──────────────────────────────────────────────────────────
 DPI = 180
@@ -571,7 +572,7 @@ ax.text(28, legend_y + 0.25, '-> data flow     --> fallback/optional',
 
 
 # ── Save ──────────────────────────────────────────────────────────────────────
-output_path = r'd:\FYP\fairmark-v1.1\FairMark-Ai-Based-Paper-Checking-System\FairMark_Software_Architecture_UML.png'
+output_path = Path(__file__).resolve().parents[1] / 'docs' / 'architecture' / 'system_architecture_uml.png'
 plt.tight_layout(pad=0.5)
 plt.savefig(output_path, dpi=DPI, bbox_inches='tight', facecolor=C_BG, edgecolor='none')
 plt.close()

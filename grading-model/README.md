@@ -1,6 +1,6 @@
 # FairMark - Intelligent Grading Engine
 
-This module provides the core grading logic for the FairMark FYP. It uses a hybrid approach combining local NLP (spaCy/SBERT) with an optional LLM layer (Google Gemini) for high-accuracy semantic evaluation.
+This module provides FairMark's local grading logic. It uses a hybrid approach combining local NLP (spaCy/SBERT) with an optional LLM layer (Google Gemini) for high-accuracy semantic evaluation.
 
 ## Features
 - **Semantic Understanding**: Handles paraphrasing, synonyms, and complex sentence structures.
@@ -33,7 +33,7 @@ This module provides the core grading logic for the FairMark FYP. It uses a hybr
    ```
 
 ## Running the Interface
-Run the `run_interface.bat` file or use:
+Run the standalone testing interface with:
 ```powershell
 python src/app.py
 ```

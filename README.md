@@ -83,10 +83,9 @@ For manual setup, deployment notes, environment-variable details, and troublesho
 ## Repository guide
 
 ```text
-backend/         FastAPI API, database models, migrations, and pytest suite
+backend/         FastAPI API, OCR cascade, database models, migrations, and pytest suite
 frontend/        React application and client-side PDF export
-ocr/             Standalone OCR provider integrations and notes
-grading-model/   Standalone grading-model interface and fallback engine
+grading-model/   Local semantic fallback engine and standalone test interface
 docs/            Architecture diagrams, requirements, and answer-key template
 scripts/         Scripts used to regenerate architecture diagrams
 ```

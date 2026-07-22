@@ -15,6 +15,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Rectangle, Ellipse, FancyArrowPatch
+from pathlib import Path
 
 # ── Canvas ────────────────────────────────────────────────────────────────────
 DPI = 300
@@ -375,7 +376,7 @@ label(ax, 50, 2.0,
       size=7.2, color=C_SUBTLE, z=6)
 
 # ── Save ───────────────────────────────────────────────────────────────────--
-out = r'D:\FYP\fairmark-v1.1\FairMark-Ai-Based-Paper-Checking-System\FairMark_Three_Tier_Architecture.png'
+out = Path(__file__).resolve().parents[1] / 'docs' / 'architecture' / 'three_tier_architecture.png'
 plt.savefig(out, dpi=DPI, bbox_inches='tight', facecolor=C_BG, pad_inches=0.15)
 plt.close()
 print(f"Saved: {out}")
