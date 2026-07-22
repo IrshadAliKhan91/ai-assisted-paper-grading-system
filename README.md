@@ -10,7 +10,7 @@ Manual grading is repetitive and can vary from paper to paper. FairMark helps te
 
 ### Key capabilities
 
-- Upload image or PDF answer sheets (JPEG, PNG, WebP, or PDF; up to 10 MB).
+- Upload JPG or PDF answer sheets (up to 10 MB).
 - Extract student details and question-answer pairs using a multi-provider OCR cascade.
 - Grade answers by meaning rather than exact wording.
 - Detect common quality issues such as negation, contradiction, number/unit mismatches, and keyword stuffing.
